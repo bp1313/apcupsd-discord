@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# This script is part of apcupsd-docker by Leroy Förster.
+# It is designed to be run by regularly (e.g. by cron). If it reads a first line '1' in the TRIGGERFILE, it will run the 'action()' function and replace the '1' with a '0'.
+# Please change the content of the TRIGGERFILE variable and the action() function according to your needs. This has to be run on the host, not within a container, to be able to shut the machine down.
+
+# Path to trigger file shared on host/container via Volume
+USERNAME="YOURUSERNAME"
+TRIGGERDIR="/home/$USERNAME/apcupsd-discord/trigger"
+TRIGGERFILE="$TRIGGERDIR/apcupsdtrigger"
+
+# Put everything you want to do on a shutdown condition inside this function.
+action(){
+  echo "Detected '1' in shutdown trigger '$TRIGGERFILE'."
+  /bin/bash /home/$USERNAME/apcupsd-discord/eventscriptoverrides/common-notifydiscord "Host triggered clean shut down due to low UPS power."
+
+  # give time to finish sending messages
+  sleep 5
+
+  # Shutdown in 1 min if supported or shutdown now
+  shutdown -P +1 || shutdown -P now
+}
+
+### Do not change below unless you know what you are doing ###
+if [ ! -d "$TRIGGERDIR" ]; then
+  mkdir $TRIGGERDIR
+fi
+if test -f "$TRIGGERFILE"; then
+  read first_line < $TRIGGERFILE
+  if [ "$first_line" == "1" ]; then
+    echo "0" > $TRIGGERFILE
+    action;
+  fi
+else
+  touch $TRIGGERFILE
+  echo "0" > $TRIGGERFILE
+fi
+exit 0

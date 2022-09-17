@@ -1,0 +1,41 @@
+#!/bin/sh
+#
+# This shell script will be placed in /etc/apcupsd
+# When the UPS is running on batteries and one
+# of the limits expires (time, run, load), this event
+# is generated to cause the machine to shutdown. 
+#
+
+# Create custom message
+HOSTNAME=`hostname`
+TRIGGERFILE=/tmp/apcupsdtrigger
+
+# Set some messaging
+MSG="UPS has reached minimum low battery level. A clean shut down will be requested on host. Wait for confirmation notification."
+status="`/bin/bash /etc/apcupsd/common-getcleanstatus`"
+
+# Send discord notification with message and status
+echo "$MSG"
+/bin/bash /etc/apcupsd/common-notifydiscord "$MSG"
+/bin/bash /etc/apcupsd/common-notifydiscord "\`\`\`$status\`\`\`"
+
+# Do clean shutdown by writing flag to host. Host should be watching this file
+# and perform the shutdown logic.
+umask 0000
+[ -d $(dirname $TRIGGERFILE) ] || mkdir -vp $(dirname $TRIGGERFILE)
+
+# Write a '1' into the file when a shutdown condition occurs
+umask 0111
+echo -n "Writing '1' to shutdown trigger file '$TRIGGERFILE'... "
+echo "1" > $TRIGGERFILE && echo "FILE WRITTEN OK."
+
+# Email code included with apcupsd
+# (
+#    echo "$MSG"
+#    echo " "
+#    /sbin/apcaccess status
+# ) | $APCUPSD_MAIL -s "$MSG" $SYSADMIN
+
+# I set this to 99 because I want to handle my own shutdown. 
+# Set to 0 for apcupsd to carry out it's logic 
+exit 99

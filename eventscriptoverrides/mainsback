@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# This shell script if placed in /etc/apcupsd
+# This event is generated when the mains power returns
+# after a powerout condition. The shutdown event may or
+# may not have been generated depending on the parameters
+# you have defined and the length of the power outage.
+#
+# Create custom message
+HOSTNAME=`hostname`
+MSG="Main power has been restored."
+
+# Send discord notification with message
+/bin/bash /etc/apcupsd/common-notifydiscord "$MSG"
+
+# Email code included with apcupsd
+# (
+#    echo "$MSG"
+#    echo " "
+#    /sbin/apcaccess status
+# ) | $APCUPSD_MAIL -s "$MSG" $SYSADMIN
+exit 0

@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# This shell script if placed in /etc/apcupsd
+# will be called by /etc/apcupsd/apccontrol when the UPS
+# goes on batteries.
+# We send an email message to root to notify him.
+#
+
+# Create custom message
+HOSTNAME=`hostname`
+MSG="System is now running on battery backup."
+
+# Get clean looking status from UPS and add it to our message
+status="`/bin/bash /etc/apcupsd/common-getcleanstatus`"
+
+# Send discord notification with message
+/bin/bash /etc/apcupsd/common-notifydiscord "$MSG"
+/bin/bash /etc/apcupsd/common-notifydiscord "\`\`\`$status\`\`\`"
+
+# Email code included with apcupsd
+# (
+#    echo "$MSG"
+#    echo " "
+#    /sbin/apcaccess status
+# ) | $APCUPSD_MAIL -s "$MSG" $SYSADMIN
+exit 0

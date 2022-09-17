@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# This shell script will be placed in /etc/apcupsd
+# Main use for this script is to reduce the output of apcaccess
+# Provide an array of keys you want to output
+#
+
+# EXAMPLE OUTPUT of apcaccess
+# APC      : 002,775,7876
+# DATE     : 2021-01-31 02:51:08 +0000  
+# HOSTNAME : b25f65125ghy
+# VERSION  : 3.14.14 (31 May 2016) unknown
+# UPSNAME  : b25f65125ghy
+# CABLE    : USB Cable
+# DRIVER   : USB UPS Driver
+# UPSMODE  : Stand Alone
+# STARTTIME: 2021-01-30 21:28:23 +0000  
+# MODEL    : Back-UPS ES 600M1 
+# STATUS   : ONLINE 
+# LINEV    : 119.0 Volts
+# LOADPCT  : 3.0 Percent
+# BCHARGE  : 100.0 Percent
+# TIMELEFT : 160.0 Minutes
+# MBATTCHG : 5 Percent
+# MINTIMEL : 3 Minutes
+# MAXTIME  : 0 Seconds
+# SENSE    : Medium
+# LOTRANS  : 92.0 Volts
+# HITRANS  : 139.0 Volts
+# ALARMDEL : 30 Seconds
+# BATTV    : 13.5 Volts
+# LASTXFER : Low line voltage
+# NUMXFERS : 2
+# XONBATT  : 2021-01-31 01:58:32 +0000  
+# TONBATT  : 0 Seconds
+# CUMONBATT: 104 Seconds
+# XOFFBATT : 2021-01-31 01:58:44 +0000  
+# SELFTEST : NO
+# STATFLAG : 0x05000008
+# SERIALNO : 4B2216P17465  
+# BATTDATE : 2020-09-05
+# NOMINV   : 120 Volts
+# NOMBATTV : 12.0 Volts
+# NOMPOWER : 330 Watts
+# FIRMWARE : 928.a8 .D USB FW:a8
+# END APC  : 2021-01-31 02:51:12 +0000
+
+
+# Add the keys you want in the output below in the desiredkeys array, seperated by spaces. 
+desiredkeys=("HOSTNAME" "UPSNAME" "STATUS" "BCHARGE" "TIMELEFT" "SELFTEST")
+
+# Create and echo consolidated status
+statusoutput=""
+for i in "${desiredkeys[@]}"
+do
+	statusoutput+="$i: "
+	statusoutput+="`apcaccess -p $i`"
+	statusoutput+="\n"
+done
+echo "$statusoutput"
+exit 0
