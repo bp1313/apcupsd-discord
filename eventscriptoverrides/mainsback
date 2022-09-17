@@ -8,7 +8,7 @@
 #
 # Create custom message
 HOSTNAME=`hostname`
-MSG="Main power has been restored."
+MSG="Main power has been restored 🔌: 🟢"
 
 # Send discord notification with message
 /bin/bash /etc/apcupsd/common-notifydiscord "$MSG"

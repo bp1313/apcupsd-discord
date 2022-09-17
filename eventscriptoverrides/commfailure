@@ -8,7 +8,7 @@
 
 # Create custom message
 HOSTNAME=`hostname`
-MSG="Communications with UPS lost."
+MSG="Communications with UPS lost 📞: 🔴"
 
 # Get clean looking status from UPS and add it to our message
 status="`/bin/bash /etc/apcupsd/common-getcleanstatus`"

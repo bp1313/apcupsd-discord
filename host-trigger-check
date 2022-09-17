@@ -9,10 +9,13 @@ USERNAME="YOURUSERNAME"
 TRIGGERDIR="/home/$USERNAME/apcupsd-discord/trigger"
 TRIGGERFILE="$TRIGGERDIR/apcupsdtrigger"
 
+# The message that will be send through Discord
+MSG="💤 Host triggered clean shut down due to low UPS power 💤"
+
 # Put everything you want to do on a shutdown condition inside this function.
 action(){
   echo "Detected '1' in shutdown trigger '$TRIGGERFILE'."
-  /bin/bash /home/$USERNAME/apcupsd-discord/eventscriptoverrides/common-notifydiscord "Host triggered clean shut down due to low UPS power."
+  /bin/bash -c "/home/$USERNAME/apcupsd-discord/eventscriptoverrides/common-notifydiscord '$MSG'"
 
   # give time to finish sending messages
   sleep 5

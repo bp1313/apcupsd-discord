@@ -8,7 +8,7 @@
 
 # Create custom message
 HOSTNAME=`hostname`
-MSG="UPS battery needs changing now due to changeme event triggered."
+MSG="UPS battery needs changing now due to changeme event triggered 🔋☠️"
 
 # Get clean looking status from UPS and add it to our message
 status="`/bin/bash /etc/apcupsd/common-getcleanstatus`"

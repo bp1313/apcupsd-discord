@@ -1,6 +1,5 @@
 #!/bin/sh
 #
-# This shell script will be placed in /etc/apcupsd
 # Sends a message to your discord webhook
 # Requires a string parameter to be passed in ($1)
 #

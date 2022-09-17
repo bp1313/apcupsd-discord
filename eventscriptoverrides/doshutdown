@@ -11,7 +11,7 @@ HOSTNAME=`hostname`
 TRIGGERFILE=/tmp/apcupsdtrigger
 
 # Set some messaging
-MSG="UPS has reached minimum low battery level. A clean shut down will be requested on host. Wait for confirmation notification."
+MSG="UPS has reached minimum low battery level. A clean shut down will be requested on host. Wait for confirmation notification ❌🔋"
 status="`/bin/bash /etc/apcupsd/common-getcleanstatus`"
 
 # Send discord notification with message and status

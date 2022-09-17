@@ -7,7 +7,7 @@
 #
 # Create custom message
 HOSTNAME=`hostname`
-MSG="Main power has been lost! System should be switching to battery backup."
+MSG="Main power has been lost! System should be switching to battery backup. 🔌: 🔴"
 
 # Send discord notification with message
 /bin/bash /etc/apcupsd/common-notifydiscord "$MSG"
