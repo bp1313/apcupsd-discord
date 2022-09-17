@@ -15,7 +15,7 @@ status="`/bin/bash /etc/apcupsd/common-getcleanstatus`"
 
 # Send discord notification with message
 /bin/bash /etc/apcupsd/common-notifydiscord "$MSG"
-/bin/bash /etc/apcupsd/common-notifydiscord "$status"
+/bin/bash /etc/apcupsd/common-notifydiscord "\`\`\`$status\`\`\`"
 
 # Email code included with apcupsd
 # (

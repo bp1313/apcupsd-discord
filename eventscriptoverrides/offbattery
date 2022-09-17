@@ -8,7 +8,7 @@
 
 # Create custom message
 HOSTNAME=`hostname`
-MSG="System is now running on main power 🔌: 🟢"
+MSG="System is now running on main power."
 
 # Get clean looking status from UPS and add it to our message
 status="`/bin/bash /etc/apcupsd/common-getcleanstatus`"

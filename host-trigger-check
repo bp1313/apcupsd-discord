@@ -5,12 +5,12 @@
 # Please change the content of the TRIGGERFILE variable and the action() function according to your needs. This has to be run on the host, not within a container, to be able to shut the machine down.
 
 # Path to trigger file shared on host/container via Volume
-USERNAME="YOURUSERNAME"
+USERNAME="USERNAMEGOESHERE"
 TRIGGERDIR="/home/$USERNAME/apcupsd-discord/trigger"
 TRIGGERFILE="$TRIGGERDIR/apcupsdtrigger"
 
 # The message that will be send through Discord
-MSG="💤 Host triggered clean shut down due to low UPS power 💤"
+MSG="Host triggered clean shut down due to low UPS power 💤"
 
 # Put everything you want to do on a shutdown condition inside this function.
 action(){
@@ -18,24 +18,31 @@ action(){
   /bin/bash -c "/home/$USERNAME/apcupsd-discord/eventscriptoverrides/common-notifydiscord '$MSG'"
 
   # give time to finish sending messages
-  sleep 5
+  /usr/bin/sleep 5
 
   # Shutdown in 1 min if supported or shutdown now
-  shutdown -P +1 || shutdown -P now
+  /sbin/shutdown -P +1 || /sbin/shutdown/shutdown -P now
 }
 
 ### Do not change below unless you know what you are doing ###
 if [ ! -d "$TRIGGERDIR" ]; then
+  echo "no trigger dir"
   mkdir $TRIGGERDIR
+  echo "created trigger dir"
 fi
 if test -f "$TRIGGERFILE"; then
+  echo "trigger exists"
   read first_line < $TRIGGERFILE
   if [ "$first_line" == "1" ]; then
+    echo "first line is 1"
     echo "0" > $TRIGGERFILE
     action;
+    echo "ran action"
   fi
 else
+  echo "creating trigger file"
   touch $TRIGGERFILE
   echo "0" > $TRIGGERFILE
+  echo "created trigger file"
 fi
 exit 0
