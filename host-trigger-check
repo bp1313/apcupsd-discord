@@ -10,7 +10,7 @@ TRIGGERDIR="/home/$USERNAME/apcupsd-discord/trigger"
 TRIGGERFILE="$TRIGGERDIR/apcupsdtrigger"
 
 # The message that will be send through Discord
-MSG="Host triggered clean shut down due to low UPS power 💤"
+MSG="💤 Host triggered clean shut down due to low UPS power 💤"
 
 # Put everything you want to do on a shutdown condition inside this function.
 action(){
